@@ -17,11 +17,10 @@ for i in range(len(hierarchy)):
     units.append(hierarchy[i].split(',')[0].strip())
     sections.append(hierarchy[i].split(',')[1].strip())
 print 'created units and section'
-# Now add 'Units' and 'Sections' as columns within the dataframe
+
 a56data['Problem Unit'] = pd.Series(units, index=a56data.index)
 a56data['Problem Section'] = pd.Series(sections, index=a56data.index)
 
-# Rearrange order of columns
 cols = a56data.columns.tolist()
 cols = cols[0:3]+cols[-2::]+cols[3:-2]
 a56data = a56data[cols]
@@ -102,14 +101,10 @@ p = np.random.randint(0,2,len(CFAs)).astype(float)
 print 'An array of random ones and zeros gives an RMSE of:',RMSE(p,CFAs)
 
 def error_metrics(p,yy):
-    '''Calculates the error metrics, i.e. the precision and recall.
-    Precision = True positives / Predicted positives
-    Recall    = True positives / Actual positives'''
     predicted_positives = len(p[p==1])
     actual_positives    = len(yy[yy==1])
-    # The predicted values for when actual values are 1
+
     pp = p[yy==1]
-    # True positives are when these predicted values are also 1
     true_positives      = len(pp[pp==1])
     false_positives     = len(yy) - true_positives
     
