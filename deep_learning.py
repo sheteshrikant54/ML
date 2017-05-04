@@ -1,4 +1,4 @@
-# import the necessary packages
+
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import classification_report
 from sklearn import datasets
@@ -11,18 +11,15 @@ train_filepath = '/home/mahesh/Dropbox/MS Sem 2/ML/Self-selected/Data/algebra_20
 a56data = pd.read_table(train_filepath)
 a56data.head()
 
-#Diving Hierarchy column to units and sections
 hierarchy = a56data['Problem Hierarchy']
 units, sections = [], []
 for i in range(len(hierarchy)):
     units.append(hierarchy[i].split(',')[0].strip())
     sections.append(hierarchy[i].split(',')[1].strip())
 
-# Now add 'Units' and 'Sections' as columns within the dataframe
 a56data['Problem Unit'] = pd.Series(units, index=a56data.index)
 a56data['Problem Section'] = pd.Series(sections, index=a56data.index)
 
-#Picking only useful columns
 cols = ['Row', 'Anon Student Id', 'Problem Unit','Problem Section', 'Problem Name','Problem View', 'Step Name', 'Step Duration (sec)','Correct Step Duration (sec)', 'Error Step Duration (sec)','Correct First Attempt', 'Incorrects', 'Hints', 'Corrects']
 df = a56data[cols]
 
