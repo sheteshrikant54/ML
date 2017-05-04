@@ -1,4 +1,4 @@
-# import the necessary packages
+
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import classification_report
 from sklearn import datasets
@@ -11,18 +11,15 @@ train_filepath = 'algebra_2005_2006_train_160k.txt'
 a56data = pd.read_table(train_filepath)
 a56data.head()
 
-#Diving Hierarchy column to units and sections
 hierarchy = a56data['Problem Hierarchy']
 units, sections = [], []
 for i in range(len(hierarchy)):
     units.append(hierarchy[i].split(',')[0].strip())
     sections.append(hierarchy[i].split(',')[1].strip())
 
-# Now add 'Units' and 'Sections' as columns within the dataframe
 a56data['Problem Unit'] = pd.Series(units, index=a56data.index)
 a56data['Problem Section'] = pd.Series(sections, index=a56data.index)
 
-#Picking only useful columns
 cols = ['Row', 'Anon Student Id', 'Problem Unit','Problem Section', 'Problem Name','Problem View', 'Step Name', 'Step Duration (sec)','Correct Step Duration (sec)', 'Error Step Duration (sec)','Correct First Attempt', 'Incorrects', 'Hints', 'Corrects']
 df = a56data[cols]
 
@@ -82,19 +79,14 @@ df = df[cols[:8]+cols[10:]].dropna()
 y = np.array(df['Correct First Attempt'])
 
 testdf = pd.DataFrame(columns=df.columns)
-#(trainX, testX, trainY, testY) = train_test_split(X_to_norm, y, test_size = 0.20)
 unique_units = list(set(df['Problem Unit']))
 for i in range(len(unique_units)):
-    # Get the last problem of the current problem unit
     lastProb = list(df[df['Problem Unit'] == unique_units[i]]['Problem Name'])[-1]
     
-    # Get all the rows corresponding to the last problem for the given problem unit
     lastProbRows = df[(df['Problem Unit'] == unique_units[i]) & (df['Problem Name']==lastProb)]
     
-    # Concatenate test dataframe with the rows just found
     testdf = pd.concat([testdf,lastProbRows])
 
-# Create a training dataframe that is equal to original dataframe with all the test cases removed
 trainIndex = list(set(df.index) - set(testdf.index))
 trainX = df.loc[trainIndex]
 trainY = np.array(df['Correct First Attempt'].loc[trainIndex])
@@ -106,7 +98,6 @@ trainX = autonorm(trainX)
 
 testX = np.array(testX[['Row', 'Anon Student Id', 'Problem Unit', 'Problem Section','Problem Name', 'Problem View', 'Step Name', 'Step Duration (sec)', 'Incorrects', 'Hints', 'Corrects']])
 testX = autonorm(testX)
-
 
 from sklearn import svm
 clf = svm.SVC()
