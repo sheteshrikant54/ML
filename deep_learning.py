@@ -64,10 +64,6 @@ df['Row'] = pd.Series(range(len(df)))
 
 import numba
 def autonorm(X):
-    ''' Calculates the mean and range of values of each column
-    in the matrix (features) subtracts the mean from each value
-    and divides by the range, thereby normalizing all values to
-    fall between -1 and 1.'''
     x_means = np.mean(X,axis=0)
     x_means = np.ones(np.shape(X))*x_means
     x_maxs  = np.max(X,axis=0)
