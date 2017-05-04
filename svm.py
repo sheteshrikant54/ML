@@ -68,10 +68,6 @@ df['Row'] = pd.Series(range(len(df)))
 
 import numba
 def autonorm(X):
-    ''' Calculates the mean and range of values of each column
-    in the matrix (features) subtracts the mean from each value
-    and divides by the range, thereby normalizing all values to
-    fall between -1 and 1.'''
     x_means = np.mean(X,axis=0)
     x_means = np.ones(np.shape(X))*x_means
     x_maxs  = np.max(X,axis=0)
@@ -84,12 +80,6 @@ autonorm_jit = numba.jit(autonorm)
 
 df = df[cols[:8]+cols[10:]].dropna()
 y = np.array(df['Correct First Attempt'])
-
-'''
-X_to_norm = np.array(df[['Row', 'Anon Student Id', 'Problem Unit', 'Problem Section','Problem Name', 'Problem View', 'Step Name', 'Step Duration (sec)', 'Incorrects', 'Hints', 'Corrects']])
-X_to_norm = autonorm(X_to_norm)
-(trainX, testX, trainY, testY) = train_test_split(X_to_norm, y, test_size = 0.20)
-'''
 
 testdf = pd.DataFrame(columns=df.columns)
 #(trainX, testX, trainY, testY) = train_test_split(X_to_norm, y, test_size = 0.20)
