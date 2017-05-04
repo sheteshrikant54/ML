@@ -31,10 +31,8 @@ x_array = []
 for i in range(len(encoded_studentId)):
     x_array.append([encoded_studentId[i], encoded_stepName[i]])
 
-# Convert x_array to np matrix
 X = np.matrix(x_array)
 
-# set Y (labels) to be our cfa
 Y = cfa
 
 k = 101
